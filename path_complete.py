@@ -9,13 +9,13 @@ from sublime import CompletionItem, CompletionList, Region
 class TogglePathCompletionCommand(sublime_plugin.TextCommand):
     def run(self, edit: sublime.Edit) -> None:
         PathCompletionListener.is_enabled = not PathCompletionListener.is_enabled
-        print("is_enabled", PathCompletionListener.is_enabled)
+        # print("is_enabled", PathCompletionListener.is_enabled)
         # if PathCompletionListener.is_enabled:
         self.view.run_command("auto_complete", {"disable_auto_insert": True, "next_completion_if_showing": False})
 
 
 class PathCompletionListener(sublime_plugin.ViewEventListener):
-    # TODO: Cache the recent completions (use filw watchers to invalidate cache)
+    # TODO: Cache the recent completions (use file watchers to invalidate cache)
     is_enabled = True
     COMPLETION_FLAGS = sublime.INHIBIT_WORD_COMPLETIONS | sublime.INHIBIT_EXPLICIT_COMPLETIONS
 
@@ -42,10 +42,10 @@ class PathCompletionListener(sublime_plugin.ViewEventListener):
         if self.in_enabled_scope():
             if not self.is_active:
                 self.is_active = True
-                print("activated")
+                # print("activated")
             return True
         elif self.is_active:
-            print("deactivated")
+            # print("deactivated")
             self.is_active = False
         return False
 
@@ -120,7 +120,7 @@ class PathCompletionListener(sublime_plugin.ViewEventListener):
 
         basename, part = os.path.split(typed_str)
         # FIXME: Doesn't deal with multiple trailing separators: "/path///abc"
-        print(f"{basename=} {part=}")
+        # print(f"{basename=} {part=}")
 
         if basename.startswith('~'):
             basename = os.path.expanduser(basename)
